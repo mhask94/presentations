@@ -1,0 +1,154 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+MPC with OSQP
+\end_layout
+
+\begin_layout Section
+OSQP Optimization Problem
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\begin{aligned}min\end{aligned}
+ & z^{T}Pz+q^{T}z\\
+s.t. & l\leq Az\leq u
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+MPC to QP
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+min &  & J=\sum_{k=0}^{T-1}(x_{k+1}-x_{goal})^{T}Q(x_{k+1}-x_{goal})+u_{k}^{T}Ru_{k}\\
+s.t. &  & x_{k+1}=A_{d}(x_{k}-x_{p})+B_{d}(u_{k}-u_{p})+w_{d}\\
+ &  & u_{min}\leq u\leq u_{max}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Small Matrix Formulation
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\begin{bmatrix}x_{1}\\
+x_{2}\\
+\vdots\\
+x_{T}
+\end{bmatrix} & =\begin{bmatrix}A_{d}x_{0}+B_{d}u_{0}+w_{d}\\
+A_{d}^{2}x_{0}+A_{d}B_{d}u_{0}+A_{d}w_{d}+B_{d}u_{1}+w_{d}\\
+\vdots\\
+A_{d}^{T}x_{0}+\sum_{i=0}^{T-1}\left[A_{d}^{i}(B_{d}u_{T-1-i}+w_{d})\right]
+\end{bmatrix}\\
+ & =\begin{bmatrix}B_{d} & 0 & \dots & 0\\
+A_{d}B_{d} & B_{d} & \dots & 0\\
+\vdots & \vdots & \ddots & \vdots\\
+A_{d}^{T-1}B_{d} & A_{d}^{T-2}B_{d} & \dots & B_{d}
+\end{bmatrix}\begin{bmatrix}u_{0}\\
+u_{1}\\
+\vdots\\
+u_{T-1}
+\end{bmatrix}+\begin{bmatrix}A_{d}x_{0}+w_{d}\\
+A_{d}^{2}x_{0}+A_{d}w_{d}+w_{d}\\
+\vdots\\
+A_{d}^{T}x_{0}+\sum_{i=0}^{T-1}A_{d}^{i}w_{d}
+\end{bmatrix}\\
+ & =Sz+v
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

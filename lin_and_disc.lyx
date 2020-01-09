@@ -1,0 +1,411 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Given a non-linear function:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\dot{x}=f(x,u)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can linearize and discretize the system.
+ We will start by linearizing using the Taylor series expansion around some
+ linearization point, 
+\begin_inset Formula $lp$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\dot{x} & \approx f(x_{lp},u_{lp})+\left.\frac{\partial f}{\partial x}\right|_{lp}(x-x_{lp})+\left.\frac{\partial f}{\partial u}\right|_{lp}(u-u_{lp})\\
+ & =A_{lp}(x-x_{lp})+B_{lp}(u-u_{lp})+f(x_{lp},u_{lp})\\
+ & =A_{lp}x+B_{lp}u+\left(-A_{lp}x_{lp}-B_{lp}u_{lp}+f(x_{lp},u_{lp})\right)\\
+ & =A_{lp}x+B_{lp}u+c
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+c=-A_{lp}x_{lp}-B_{lp}u_{lp}+f(x_{lp},u_{lp})
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can move all of the x's to the left side of the equals sign like a standard
+ differential equation:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\dot{x}(t)-A_{lp}x(t)=B_{lp}u(t)+c
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now we get a standard integrating factor:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+IF=e^{-A_{lp}t}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Apply the integrating factor:
+\begin_inset Formula 
+\begin{align*}
+e^{-A_{lp}t}\dot{x}(t)-e^{-A_{lp}t}A_{lp}x & =e^{-A_{lp}t}B_{lp}u(t)+e^{-A_{lp}t}c\\
+\int_{0}^{\Delta t}\frac{d}{dt}(e^{-A_{lp}t}x(t)) & =\int_{0}^{\Delta t}(e^{-A_{lp}t}B_{lp}u(t)+e^{-A_{lp}t}c)dt\\
+e^{-A_{lp}\Delta t}x(t)-x_{0} & =\int_{0}^{\Delta t}(e^{-A_{lp}t}B_{lp}u(t)+e^{-A_{lp}t}c)dt\\
+e^{-A_{lp}\Delta t}x(\Delta t) & =x_{0}+\int_{0}^{\Delta t}(e^{-A_{lp}t}B_{lp}u(t)+e^{-A_{lp}t}c)dt\\
+x_{k+1} & =e^{A_{lp}\Delta t}[x_{k}+\int_{0}^{\Delta t}(e^{-A_{lp}t}B_{lp}u(t)+e^{-A_{lp}t}c)dt]\\
+ & =e^{A_{lp}\Delta t}[x_{k}+\int_{0}^{\Delta t}e^{-A_{lp}t}B_{lp}u(t)dt+\int_{0}^{\Delta t}e^{-A_{lp}t}cdt]
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Because we are discretizing, u(t) is a constant over the 
+\begin_inset Formula $\Delta t$
+\end_inset
+
+.
+ 
+\begin_inset Formula $B_{lp}$
+\end_inset
+
+ is also a constant (because it was already linearized), so we can pull
+ both of these terms out of the first integral.
+ As for the second integral, c is a constant and can be pulled out of the
+ integral as well.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x_{k+1}=e^{A_{lp}\Delta t}x_{k}+e^{A_{lp}\Delta t}\int_{0}^{\Delta t}e^{-A_{lp}t}dt\left[B_{lp}u_{k}+c\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now let's deal with the integral 
+\begin_inset Formula $\int_{0}^{\Delta t}e^{-A_{lp}t}dt$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\int_{0}^{\Delta t}e^{-A_{lp}t}dt & =\int_{0}^{\Delta t}(I-A_{lp}t+A_{lp}^{2}t^{2}\frac{1}{2!}-A_{lp}^{3}t^{3}\frac{1}{3!}+...)dt\\
+ & =\Delta t(I-A_{lp}\Delta t\frac{1}{2!}+A_{lp}^{2}\Delta t^{2}\frac{1}{3!}-A_{lp}^{3}\Delta t^{3}\frac{1}{4!}+...)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+This integral also has an 
+\begin_inset Formula $e^{A_{lp}\Delta t}$
+\end_inset
+
+ multiplied in the front.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+= & e^{A_{lp}\Delta t}\Delta t(I-A_{lp}\Delta t\frac{1}{2!}+A_{lp}^{2}\Delta t^{2}\frac{1}{3!}-A_{lp}^{3}\Delta t^{3}\frac{1}{4!}+...)\\
+= & \Delta t(I+A_{lp}\Delta t+A_{lp}^{2}\Delta t^{2}\frac{1}{2!}+A_{lp}^{3}\Delta t^{3}\frac{1}{3!}...)(I-A_{lp}\Delta t\frac{1}{2!}+A_{lp}^{2}\Delta t^{2}\frac{1}{3!}-A_{lp}^{3}\Delta t^{3}\frac{1}{4!}+...)\\
+\approx & \Delta t\left[I(I-A_{lp}\Delta t\frac{1}{2!}+A_{lp}^{2}\Delta t^{2}\frac{1}{3!}-A_{lp}^{3}\Delta t^{3}\frac{1}{4!})\right]\\
+ & +\Delta t\left[A_{lp}\Delta t(I\Delta t-A_{lp}\Delta t\frac{1}{2!}+A_{lp}^{2}\Delta t^{2}\frac{1}{3!})\right]\\
+ & +\Delta t\left[A_{lp}^{2}\Delta t^{2}(I-A_{lp}\Delta t\frac{1}{2!})\right]\\
+ & +\Delta t\left[A_{lp}^{3}\Delta t^{3}\frac{1}{3!}(I)\right]\\
+= & \Delta t\left[I-A_{lp}\Delta t\frac{1}{2!}+A_{lp}^{2}\Delta t^{2}\frac{1}{3!}-A_{lp}^{3}\Delta t^{3}\frac{1}{4!}+A_{lp}\Delta t-A_{lp}^{2}\Delta t^{2}\frac{1}{2!}+A_{lp}^{3}\Delta t^{3}\frac{1}{3!}+A_{lp}^{2}\Delta t^{2}\frac{1}{2!}-A_{lp}^{3}\Delta t^{3}\frac{1}{2!2!}+A_{lp}^{3}\Delta t^{3}\frac{1}{3!}\right]\\
+= & \Delta t\left[I+A_{lp}\Delta t\left(1-\frac{1}{2!}\right)+A_{lp}^{2}\Delta t^{2}\left(\frac{1}{3!}-\frac{1}{2!}+\frac{1}{2!}\right)+A_{lp}^{3}\Delta t^{3}\left(-\frac{1}{4!}+\frac{1}{3!}-\frac{1}{2!2!}+\frac{1}{3!}\right)\right]\\
+= & \Delta t\left[I+A_{lp}\Delta t\frac{1}{2!}+A_{lp}^{2}\Delta t^{2}\frac{1}{3!}+A_{lp}^{3}\Delta t^{3}\frac{1}{4!}\right]\\
+\equiv & G_{lp}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let's just define the final result as a matrix 
+\begin_inset Formula $G_{lp}$
+\end_inset
+
+.
+ With a little rearranging, we can get this:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+G_{lp}=A_{lp}^{-1}\left(e^{A_{lp}\Delta t}-I\right)\Delta t
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So 
+\begin_inset Formula $G_{lp}$
+\end_inset
+
+ can be found by either using a matrix inverse or by a few matrix multiplication
+s.
+ Now that we solved the integral, let's look back at where we left off.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x_{k+1}=e^{A_{lp}\Delta t}x_{k}+e^{A_{lp}\Delta t}\int_{0}^{\Delta t}e^{-A_{lp}t}dt\left[B_{lp}u_{k}+c\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now we can substitute in 
+\begin_inset Formula $G_{lp}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+x_{k+1} & =e^{A_{lp}\Delta t}x_{k}+G_{lp}\left[B_{lp}u_{k}+c\right]\\
+ & =e^{A_{lp}\Delta t}x_{k}+G_{lp}B_{lp}u_{k}+G_{lp}c
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now we need to substitute our constant vector 
+\begin_inset Formula $c$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+x_{k+1} & =e^{A_{lp}\Delta t}x_{k}+G_{lp}B_{lp}u_{k}+G_{lp}\left[-A_{lp}x_{lp}-B_{lp}u_{lp}+f(x_{lp},u_{lp})\right]\\
+ & =e^{A_{lp}\Delta t}x_{k}+G_{lp}B_{lp}\left(u_{k}-u_{lp}\right)-G_{lp}A_{lp}x_{lp}+G_{lp}f(x_{lp},u_{lp})
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let's simplify the term 
+\begin_inset Formula $-G_{lp}A_{lp}x_{lp}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+-G_{lp}A_{lp}x_{lp} & =-\Delta t\left[I+A_{lp}\Delta t\frac{1}{2!}+A_{lp}^{2}\Delta t^{2}\frac{1}{3!}+A_{lp}^{3}\Delta t^{3}\frac{1}{4!}\right]A_{lp}x_{lp}\\
+ & =-\left[A_{lp}\Delta t+A_{lp}^{2}\Delta t^{2}\frac{1}{2!}+A_{lp}^{3}\Delta t^{3}\frac{1}{3!}+A_{lp}^{4}\Delta t^{4}\frac{1}{4!}\right]x_{lp}\\
+ & =-\left[A_{lp}\Delta t+A_{lp}^{2}\Delta t^{2}\frac{1}{2!}+A_{lp}^{3}\Delta t^{3}\frac{1}{3!}+A_{lp}^{4}\Delta t^{4}\frac{1}{4!}\right]x_{lp}-I_{lp}x_{lp}+I_{lp}x_{lp}\\
+ & =-\left[I+A_{lp}\Delta t+A_{lp}^{2}\Delta t^{2}\frac{1}{2!}+A_{lp}^{3}\Delta t^{3}\frac{1}{3!}+A_{lp}^{4}\Delta t^{4}\frac{1}{4!}\right]x_{lp}+I_{lp}x_{lp}\\
+ & =-e^{A_{lp}\Delta t}x_{lp}+x_{lp}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Using this simplification, we get this:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+x_{k+1} & =e^{A_{lp}\Delta t}\left(x_{k}-x_{lp}\right)+G_{lp}B_{lp}\left(u_{k}-u_{lp}\right)+x_{lp}+G_{lp}f(x_{lp},u_{lp})
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Let,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\tilde{x}_{k} & =x_{k}-x_{lp}\\
+\tilde{u}_{k} & =u_{k}-u_{lp}\\
+A_{d} & =e^{A_{lp}\Delta t}\\
+B_{d} & =G_{lp}B_{lp}\\
+w & =x_{lp}+G_{lp}f(x_{lp},u_{lp})\\
+G_{lp} & =\Delta t\left[I+A_{lp}\Delta t\frac{1}{2!}+A_{lp}^{2}\Delta t^{2}\frac{1}{3!}+A_{lp}^{3}\Delta t^{3}\frac{1}{4!}\right]\\
+ & =A_{lp}^{-1}\left[e^{A_{lp}\Delta t}-I\right]\Delta t
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+And the final linearized and discretized equation is this:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x_{k+1}=A_{d}\tilde{x}_{k}+B_{d}\tilde{u}_{k}+w
+\]
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
