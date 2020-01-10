@@ -87,8 +87,8 @@ OSQP Optimization Problem
 \begin_inset Formula 
 \begin{align*}
 \begin{aligned}min\end{aligned}
- & z^{T}Pz+q^{T}z\\
-s.t. & l\leq Az\leq u
+ & z^{T}Pz+2q^{T}z\\
+s.t. & lb\leq Az\leq ub
 \end{align*}
 
 \end_inset
@@ -118,6 +118,29 @@ Small Matrix Formulation
 \end_layout
 
 \begin_layout Standard
+Here is the design variable:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+z=\begin{bmatrix}u_{0}\\
+u_{1}\\
+\vdots\\
+u_{T-1}
+\end{bmatrix}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Factor out the design variable:
+\end_layout
+
+\begin_layout Standard
 \begin_inset Formula 
 \begin{align*}
 \begin{bmatrix}x_{1}\\
@@ -127,7 +150,7 @@ x_{T}
 \end{bmatrix} & =\begin{bmatrix}A_{d}x_{0}+B_{d}u_{0}+w_{d}\\
 A_{d}^{2}x_{0}+A_{d}B_{d}u_{0}+A_{d}w_{d}+B_{d}u_{1}+w_{d}\\
 \vdots\\
-A_{d}^{T}x_{0}+\sum_{i=0}^{T-1}\left[A_{d}^{i}(B_{d}u_{T-1-i}+w_{d})\right]
+A_{d}^{T}x_{0}+\sum_{i=0}^{T-1}\left[A_{d}^{i}(B_{d}u_{T-(i+1)}+w_{d})\right]
 \end{bmatrix}\\
  & =\begin{bmatrix}B_{d} & 0 & \dots & 0\\
 A_{d}B_{d} & B_{d} & \dots & 0\\
@@ -144,6 +167,272 @@ A_{d}^{T}x_{0}+\sum_{i=0}^{T-1}A_{d}^{i}w_{d}
 \end{bmatrix}\\
  & =Sz+v
 \end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Modify to get QP structure:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+J & =(Sz+v-x_{goal})^{T}Q_{big}(Sz+v-x_{goal})+(z-u_{goal})^{T}R_{big}(z-u_{goal})\\
+ & =(Sz)^{T}Q_{big}Sz+(Sz)^{T}Q_{big}v-(Sz)^{T}Q_{big}x_{goal}\\
+ & +v^{T}Q_{big}Sz+v^{T}Q_{big}v-v^{T}Q_{big}x_{goal}\\
+ & -x_{goal}^{T}Q_{big}Sz-x_{goal}^{T}Q_{big}v+x_{goal}^{T}Q_{big}x_{goal}\\
+ & +z^{T}R_{big}z+u_{goal}^{T}R_{big}u_{goal}-2z^{T}R_{big}u_{goal}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Remove constants:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+J & =(Sz)^{T}Q_{big}Sz+(Sz)^{T}Q_{big}v-(Sz)^{T}Q_{big}x_{goal}\\
+ & +v^{T}Q_{big}Sz\\
+ & -x_{goal}^{T}Q_{big}Sz\\
+ & +z^{T}R_{big}z
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Combine terms:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+J & =z^{T}(S^{T}Q_{big}S+R_{big})z+2z^{T}(S^{T}Q_{big}v-S^{T}Q_{big}x_{goal}-R_{big}u_{goal})\\
+ & =z^{T}Pz+2z^{T}q\\
+ & =z^{T}Pz+2q^{T}z
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now we have the QP cost function parameters:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+P & =S^{T}Q_{big}S+R_{big}\\
+q & =S^{T}Q_{big}(v-x_{goal})-R_{big}u_{goal}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The input saturation constraints are fairly straightforward:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+u_{big,min}\leq Iz\leq u_{big,max}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+u_{big,min}=\begin{bmatrix}u_{min}\\
+\vdots\\
+u_{min}
+\end{bmatrix}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now we have the QP constraint parameters:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+lb & =u_{big,min}\\
+ub & =u_{big,max}\\
+A & =I
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Parameterizing the Input Space
+\end_layout
+
+\begin_layout Standard
+Rather than use inputs at every time step as design variables in the optimizatio
+n, a few points could be chosen to parameterize the trajectory.
+ Here, we will use linear interpolation between evenly spaced parameterization
+ points 
+\begin_inset Formula $U$
+\end_inset
+
+.
+ With 
+\begin_inset Formula $p$
+\end_inset
+
+ parameterization points and a time horizon of 
+\begin_inset Formula $T$
+\end_inset
+
+, the number of time steps between parameterization points (
+\begin_inset Formula $T_{p}$
+\end_inset
+
+) is
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+T_{p}=\frac{T-1}{p-1}
+\]
+
+\end_inset
+
+.
+ At any time step 
+\begin_inset Formula $k$
+\end_inset
+
+, the input 
+\begin_inset Formula $u$
+\end_inset
+
+ can be written as a linear interpolation between two parameterization points
+ 
+\begin_inset Formula $U_{i}$
+\end_inset
+
+ and 
+\begin_inset Formula $U_{j}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+u=(1-c)U_{i}+cU_{j}
+\]
+
+\end_inset
+
+, where
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+i & =floor\left(\frac{k}{\Delta T}\right)\\
+j & =i+1\\
+c & =\frac{k-iT_{p}}{T_{p}}
+\end{align*}
+
+\end_inset
+
+.
+ Now the dynamics can be written as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+x_{k+1}=A_{d}x_{k}+B_{d}\left[(1-c)U_{i}+cU_{j}\right]+w_{d}
+\]
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsection
+Parameterized Small Matrix Formulation
+\end_layout
+
+\begin_layout Standard
+With the parameterized input space, the 
+\begin_inset Formula $S$
+\end_inset
+
+ matrix from the small matrix formulation changes while the 
+\begin_inset Formula $v$
+\end_inset
+
+ vector stays the same.
+ As an example, with 
+\begin_inset Formula $T=5$
+\end_inset
+
+ and 
+\begin_inset Formula $p=3$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+S=\begin{bmatrix}B_{d} & 0 & 0\\
+(A_{d}+\frac{1}{2}I)B_{d} & \frac{1}{2}B_{d} & 0\\
+(A_{d}^{2}+\frac{1}{2}A_{d})B_{d} & (\frac{1}{2}A_{d}+I)B_{d} & 0\\
+(A_{d}^{3}+\frac{1}{2}A_{d}^{2})B_{d} & (\frac{1}{2}A_{d}^{2}+A_{d}+\frac{1}{2}I)B_{d} & \frac{1}{2}B_{d}\\
+(A_{d}^{4}+\frac{1}{2}A_{d}^{3})B_{d} & (\frac{1}{2}A_{d}^{3}+A_{d}^{2}+\frac{1}{2}A_{d})B_{d} & (\frac{1}{2}A_{d}+I)B_{d}
+\end{bmatrix}
+\]
+
+\end_inset
+
+.
+ The optimization design variable would now be
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+z=\begin{bmatrix}U_{0}\\
+U_{1}\\
+U_{2}
+\end{bmatrix}
+\]
 
 \end_inset
 
