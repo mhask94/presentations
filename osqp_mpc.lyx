@@ -439,5 +439,72 @@ U_{2}
 
 \end_layout
 
+\begin_layout Subsection
+PSMF with T=10 and p=3
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+x_{1} & =BU_{0}+Ax_{0}+w\\
+x_{2} & =ABU_{0}+B[\frac{2}{3}U_{0}+\frac{1}{3}U_{1}]+...\\
+ & =(A+\frac{2}{3}I)BU_{0}+\frac{1}{3}BU_{1}+...\\
+x_{3} & =(A^{2}+\frac{2}{3}A)BU_{0}+\frac{1}{3}ABU_{1}+B[\frac{1}{3}U_{0}+\frac{2}{3}U_{1}]+...\\
+ & =(A^{2}+\frac{2}{3}A+\frac{1}{3}I)BU_{0}+(\frac{1}{3}A+\frac{2}{3}I)BU_{1}+...\\
+x_{4} & =A(A^{2}+\frac{2}{3}A+\frac{1}{3}I)BU_{0}+(\frac{1}{3}A^{2}+\frac{2}{3}A+I)BU_{1}+...\\
+x_{5} & =A^{2}(A^{2}+\frac{2}{3}A+\frac{1}{3}I)BU_{0}+A(\frac{1}{3}A^{2}+\frac{2}{3}A+I)BU_{1}+B[\frac{2}{3}U_{1}+\frac{1}{3}U_{2}]+...\\
+ & =A^{2}(A^{2}+\frac{2}{3}A+\frac{1}{3}I)BU_{0}+(\frac{1}{3}A^{3}+\frac{2}{3}A^{2}+A+\frac{2}{3}I)BU_{1}+\frac{1}{3}BU_{2}
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\begin{bmatrix}x_{1}\\
+x_{2}\\
+x_{3}\\
+x_{4}\\
+x_{5}\\
+x_{6}\\
+x_{7}\\
+x_{8}\\
+x_{9}\\
+x_{10}
+\end{bmatrix}=\begin{bmatrix}B_{d} & 0 & 0 & 0\\
+(A_{d}+\frac{2}{3}I)B_{d} & \frac{1}{3}B_{d} & 0 & 0\\
+(A_{d}^{2}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & (\frac{1}{3}A_{d}+\frac{2}{3}I)B_{d} & 0 & 0\\
+A_{d}(A_{d}^{2}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & (\frac{1}{3}A_{d}^{2}+\frac{2}{3}A_{d}+I)B_{d} & 0 & 0\\
+A_{d}^{2}(A_{d}^{2}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & (\frac{1}{3}A_{d}^{3}+\frac{2}{3}A_{d}^{2}+A_{d}+\frac{2}{3}I)B_{d} & \frac{1}{3}B_{d} & 0\\
+A_{d}^{3}(A_{d}^{2}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & (\frac{1}{3}A_{d}^{4}+\frac{2}{3}A_{d}^{3}+A_{d}^{3}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & (\frac{1}{3}A_{d}+\frac{2}{3}I)B_{d} & 0\\
+A_{d}^{4}(A_{d}^{2}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & A_{d}(\frac{1}{3}A_{d}^{4}+\frac{2}{3}A_{d}^{3}+A_{d}^{3}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & (\frac{1}{3}A_{d}^{2}+\frac{2}{3}A_{d}+I)B_{d} & 0\\
+A_{d}^{5}(A_{d}^{2}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & A_{d}^{2}(\frac{1}{3}A_{d}^{4}+\frac{2}{3}A_{d}^{3}+A_{d}^{3}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & (\frac{1}{3}A_{d}^{3}+\frac{2}{3}A_{d}^{2}+A_{d}+\frac{2}{3}I)B_{d} & \frac{1}{3}B_{d}\\
+A_{d}^{6}(A_{d}^{2}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & A_{d}^{3}(\frac{1}{3}A_{d}^{4}+\frac{2}{3}A_{d}^{3}+A_{d}^{3}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & (\frac{1}{3}A_{d}^{4}+\frac{2}{3}A_{d}^{3}+A_{d}^{3}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & (\frac{1}{3}A_{d}+\frac{2}{3}I)B_{d}\\
+A_{d}^{7}(A_{d}^{2}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & A_{d}^{4}(\frac{1}{3}A_{d}^{4}+\frac{2}{3}A_{d}^{3}+A_{d}^{3}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & A_{d}(\frac{1}{3}A_{d}^{4}+\frac{2}{3}A_{d}^{3}+A_{d}^{3}+\frac{2}{3}A_{d}+\frac{1}{3}I)B_{d} & (\frac{1}{3}A_{d}^{2}+\frac{2}{3}A_{d}+I)B_{d}
+\end{bmatrix}\begin{bmatrix}U_{0}\\
+U_{1}\\
+U_{2}\\
+U_{3}
+\end{bmatrix}+\begin{bmatrix}A_{d}x_{0}+w_{d}\\
+A_{d}^{2}x_{0}+A_{d}w_{d}+w_{d}\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\end{bmatrix}
+\]
+
+\end_inset
+
+
+\end_layout
+
 \end_body
 \end_document
