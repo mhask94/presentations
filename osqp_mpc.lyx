@@ -362,7 +362,7 @@ u=(1-c)U_{i}+cU_{j}
 \begin{align*}
 i & =floor\left(\frac{k}{\Delta T}\right)\\
 j & =i+1\\
-c & =\frac{k-iT_{p}}{T_{p}}
+c & =\frac{k}{T_{p}}-i
 \end{align*}
 
 \end_inset
