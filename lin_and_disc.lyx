@@ -264,7 +264,7 @@ Let's just define the final result as a matrix
 \begin_layout Standard
 \begin_inset Formula 
 \[
-G_{lp}=A_{lp}^{-1}\left(e^{A_{lp}\Delta t}-I\right)\Delta t
+G_{lp}=A_{lp}^{-1}\left(e^{A_{lp}\Delta t}-I\right)
 \]
 
 \end_inset
@@ -384,7 +384,7 @@ A_{d} & =e^{A_{lp}\Delta t}\\
 B_{d} & =G_{lp}B_{lp}\\
 w & =x_{lp}+G_{lp}f(x_{lp},u_{lp})\\
 G_{lp} & =\Delta t\left[I+A_{lp}\Delta t\frac{1}{2!}+A_{lp}^{2}\Delta t^{2}\frac{1}{3!}+A_{lp}^{3}\Delta t^{3}\frac{1}{4!}\right]\\
- & =A_{lp}^{-1}\left[e^{A_{lp}\Delta t}-I\right]\Delta t
+ & =A_{lp}^{-1}\left[e^{A_{lp}\Delta t}-I\right]
 \end{align*}
 
 \end_inset
